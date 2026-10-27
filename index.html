@@ -1,0 +1,1295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IIHC HUB | Home</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+        }
+        body {
+            background-color: #fdfcfc;
+            color: #333;
+            line-height: 1.6;
+
+            background-image: url("iihc-logo.jpg");
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: 600px 500px;
+        }
+        header {
+            background: linear-gradient(135deg, #dc3545, #b92d3a);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+        header h1 { font-size: 2.5rem; margin-bottom: 0.5rem; }
+        nav {
+            background: 22;
+            padding: 1rem;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        nav a {
+            color: white;
+            margin: 0 1rem;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        nav a:hover { color: #ffc107; }
+        .container {
+            max-width: 1100px;
+            margin: 2rem auto;
+            padding: 0 1.2rem;
+        }
+        .welcome-box {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .search-box {
+            max-width: 450px;
+            margin: 0 auto 2rem;
+        }
+        .search-box input {
+            width: 100%;
+            padding: 12px 20px;
+            border: 2px solid #ddd;
+            border-radius: 25px;
+            font-size: 16px;
+        }
+        .subject-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        .subject-card {
+            background: white;
+            padding: 1.8rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            border-left: 5px solid #dc3545;
+        }
+        .subject-card:hover { transform: translateY(-5px); }
+        .selection-panel { margin: 1.5rem 0; }
+        .selection-heading { margin: 0 0 1rem; color: #333; }
+        .choice-card { background: white; padding: 1.5rem; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,.07); cursor: pointer; border-left: 5px solid #dc3545; transition: transform .2s; }
+        .choice-card:hover { transform: translateY(-3px); background: #fff8f8; }
+        .choice-card h3 { margin-bottom: .35rem; }
+        .selection-back { margin: 0 0 1rem; }
+        .selection-note { color: #666; margin-bottom: 1rem; }
+        .option { user-select: none; }
+        .about-section {
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+            margin-top: 3rem;
+        }
+        .page { display: none; }
+        .page.active { display: block; }
+        .back-btn {
+            display: inline-block;
+            margin-bottom: 1rem;
+            color: #dc3545;
+            text-decoration: none;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        footer {
+            background: #222;
+            color: white;
+            text-align: center;
+            padding: 1.5rem;
+            margin-top: 3rem;
+        }
+        .hidden { display: none !important; }
+
+        .section-tabs {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        .section-tab {
+            padding: 10px 20px;
+            background: #ddd;
+            border: none;
+            border-radius: 6px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .section-tab.active {
+            background: #dc3545;
+            color: white;
+        }
+        .item-title {
+            background: white;
+            padding: 15px 18px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border-left: 4px solid #dc3545;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.2s ease;
+        }
+        .item-title:hover {
+            background: #fff5f5;
+        }
+        .single-view {
+            background: white;
+            padding: 22px;
+            border-radius: 8px;
+            border-left: 4px solid #28a745;
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+        .single-view.show {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .quiz-item {
+            background: white;
+            padding: 18px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        .quiz-item p {
+            font-size: 15px;
+            font-weight: 500;
+            margin-bottom: 10px;
+        }
+        .option {
+            padding: 10px 14px;
+            margin: 6px 0;
+            border-radius: 6px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            background: #f8f9fa;
+            transition: all 0.2s ease;
+            font-size: 14px;
+        }
+        .option:hover { background: #e9ecef; }
+        .option.correct {
+            background: #d4edda;
+            border-color: #28a745;
+            color: #155724;
+        }
+        .option.wrong {
+            background: #f8d7da;
+            border-color: #dc3545;
+            color: #721c24;
+        }
+        .submit-quiz-btn {
+            padding: 12px 25px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            max-width: 250px;
+            margin: 20px auto;
+            display: block;
+        }
+        .submit-quiz-btn:hover { background: #1d4ed8; }
+        .feedback {
+            margin-top: 8px;
+            padding: 8px 12px;
+            border-radius: 5px;
+            display: none;
+            font-size: 13px;
+        }
+        .feedback.show { display: block; }
+        .feedback.correct { background: #d4edda; color: #155724; }
+        .feedback.wrong { background: #f8d7da; color: #721c24; }
+    </style>
+</head>
+<body>
+
+    <div style="text-align: center;">
+        <img src="iihc-img.jpg" alt="IIHC HUB Logo" height="170px" onerror="this.style.display='none'">
+    </div>
+
+    <header style="text-align: center; padding: 10px 0;">
+  <div style="display: flex; justify-content: center; gap: 45px;">
+    <a href="#" onclick="showPage('home')" style="text-decoration: none; font-weight: 600; color: #333;">🏠 Home</a>
+    <a href="#" onclick="showPage('about')" style="text-decoration: none; font-weight: 600; color: #333;">ℹ️ About Us</a>
+    <a href="#" onclick="showPage('contact')" style="text-decoration: none; font-weight: 600; color: #333;">📞 Contact</a>
+  </div>
+</header>
+</header>
+
+<nav>
+    
+</nav>
+
+<div class="container">
+    <!-- HOME PAGE -->
+    <div id="home-page" class="page active">
+        <div class="welcome-box">
+            <h2>👋 Welcome, Students!</h2>
+            <p style="margin-top: 10px; font-size: 16px; color: #666;">
+                Find your lessons, reviewers, and practice quizzes all in one place.📖✨
+            </p>
+        </div>
+        <div id="strandSelection" class="selection-panel">
+            <h3 class="selection-heading"> SELECT STRAND </h3>
+            <p class="selection-note"></p>
+            <div class="subject-grid" id="strandGrid">
+                <div class="choice-card" onclick="chooseStrand('STEM')"><h3>🔬 STEM</h3><p>Science, Technology, Engineering, and Mathematics</p></div>
+                <div class="choice-card" onclick="chooseStrand('HUMSS')"><h3>📚 HUMSS</h3><p>Humanities and Social Sciences</p></div>
+                <div class="choice-card" onclick="chooseStrand('ABM')"><h3>📊 ABM</h3><p>Accountancy, Business, and Management</p></div>
+                <div class="choice-card" onclick="chooseStrand('TVL-ICT')"><h3>💻 TVL-ICT</h3><p>Information and Communications Technology</p></div>
+                <div class="choice-card" onclick="chooseStrand('GAS')"><h3>🎓 GAS</h3><p>General Academic Strand</p></div>
+                <div class="choice-card" onclick="chooseStrand('HE')"><h3>👨‍🍳TVL-HE</h3><p>Cookery</p></div>
+            </div>
+        </div>
+        <div id="gradeSelection" class="selection-panel hidden">
+            <button class="back-btn selection-back" onclick="backToStrands()">← Back to Strand</button>
+            <h3 class="selection-heading" id="selectedStrandTitle">Choose Grade Level</h3>
+            <p class="selection-note"></p>
+            <div class="subject-grid">
+                <div class="choice-card" onclick="chooseGrade('11')"><h3>📘 Grade 11</h3><p>Grade 11 Subject</p></div>
+                <div class="choice-card" onclick="chooseGrade('12')"><h3>📗 Grade 12</h3><p>Grade 12 Subject</p></div>
+            </div>
+        </div>
+        <div id="subjectSelection" class="selection-panel hidden">
+            <button class="back-btn selection-back" onclick="backToGrades()">← Back to Grade Level</button>
+            <h3 class="selection-heading" id="selectedGradeTitle">Subject</h3>
+            <p class="selection-note"></p>
+            <div class="search-box"><input type="text" id="searchInput" placeholder="🔍 Search subject..."></div>
+            <div class="subject-grid" id="subjectGrid"></div>
+        </div>
+    </div>
+
+    <!-- ABOUT PAGE -->
+    <div id="about-page" class="page">
+        <div class="about-section">
+            <h2>ℹ️ About IIHC LaForteza Campus</h2>
+            <p style="margin-top: 15px; font-size: 16px;">
+                <strong>IIHC HUB</strong> Horizon Institute of Technology Corporation Is An Educational Insitution Located In North Caloocan Philippines, Offering Senior High School And Technical-Vocational Programs.
+                <strong>IIHC La Forteza</strong>. Our goal is to make learning materials easily accessible
+                for every student — anytime, anywhere.
+            </p>
+            <p style="margin-top: 10px;">
+                We believe that education should not be limited inside the classroom.
+                Through this platform, students can review lessons, download study materials,
+                and take practice quizzes at their own pace.
+            </p>
+            <h3 style="margin-top: 25px;">🎯 Our Mission</h3>
+            <p>To provide a simple, organized, and free learning hub that supports students
+                in their academic journey.</p>
+        </div>
+    </div>
+
+    <!-- CONTACT PAGE -->
+    <div id="contact-page" class="page">
+        <div class="about-section">
+            <h2>📞 Contact Us</h2>
+            <p style="margin-top: 15px; font-size: 16px;">
+                Have questions or suggestions? We'd love to hear from you!
+            </p>
+            <div style="margin-top: 20px; line-height: 2;">
+                <p><strong>📘 Facebook Page:</strong> <a href="https://www.facebook.com/share/1DhpkRR2Rx/" target="_blank">Visit Our Page</a></p>
+                <p><strong>📱 Contact Number:</strong> 0967 892 9232</p>
+                <p><strong>📧 Email:</strong> iihclaforteza@gmail.com</p>
+                <p><strong>🏫 School Address:</strong> Blk 4 Lot 6 La Forteza Subdivision Camarin Brgy. 175 District 1 , Caloocan, Philippines, 1400</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================================================
+                    📐 MATHEMATICS
+    ================================================== -->
+    <div id="subject-math" class="page">
+        <a href="#" class="back-btn" onclick="showPage('home'); backToStrands()">← Back To Select Subject</a>
+        <h2>📐 General Mathematics</h2>
+        <div class="section-tabs">
+            <button class="section-tab active" onclick="switchSection('math-lessons')" id="tab-math-lessons">📖 Lessons</button>
+            <button class="section-tab" onclick="switchSection('math-reviewers')" id="tab-math-reviewers">📝 Reviewers</button>
+            <button class="section-tab" onclick="switchSection('math-quizzes')" id="tab-math-quizzes">❓ Quizzes</button>
+        </div>
+
+        <!-- MATH LESSONS -->
+        <div id="math-lessons" class="section-content">
+            <div id="math-lesson-list" class="item-list">
+                <h4 style="margin-bottom: 15px; color: #555;">📖 Select a Lesson</h4>
+                <div class="item-title" onclick="showSingleItem('math-lesson', 1)">📖 Lesson 1: Basic Operations</div>
+                <div class="item-title" onclick="showSingleItem('math-lesson', 2)">📖 Lesson 2: Fractions</div>
+                <div class="item-title" onclick="showSingleItem('math-lesson', 3)">📖 Lesson 3: Decimals & Percent</div>
+
+                <div class="item-title" onclick="showSingleItem('math-lesson', 4)">📖 Lesson 4: Algebraic Expressions</div>
+                <div class="item-title" onclick="showSingleItem('math-lesson', 5)">📖 Lesson 5: Linear Equations</div>
+                <div class="item-title" onclick="showSingleItem('math-lesson', 6)">📖 Lesson 6: Functions and Relations</div>
+                <div class="item-title" onclick="showSingleItem('math-lesson', 7)">📖 Lesson 7: Sets and Set Operations</div>
+                <div class="item-title" onclick="showSingleItem('math-lesson', 8)">📖 Lesson 8: Rational Expressions</div>
+                <div class="item-title" onclick="showSingleItem('math-lesson', 9)">📖 Lesson 9: Exponents and Radicals</div>
+                <div class="item-title" onclick="showSingleItem('math-lesson', 10)">📖 Lesson 10: Percent, Markup, and Discount</div>
+            </div>
+            <div id="math-lesson-view" class="single-view">
+                <span class="back-btn" onclick="backToList('math-lesson')">← Back to Lessons List</span>
+                <div id="math-lesson-content-1">
+                    <h3>📖 Lesson 1: Basic Operations</h3>
+                    <p><strong>Addition (+):</strong> Combining numbers to find the sum.</p>
+                    <p><strong>Subtraction (−):</strong> Taking one number away from another.</p>
+                    <p><strong>Multiplication (×):</strong> Repeated addition.</p>
+                    <p><strong>Division (÷):</strong> Splitting into equal parts.</p>
+                </div>
+                <div id="math-lesson-content-2">
+                    <h3>📖 Lesson 2: Fractions</h3>
+                    <p><strong>Numerator:</strong> Number above the line → parts we have.</p>
+                    <p><strong>Denominator:</strong> Number below the line → total parts.</p>
+                    <p style="margin-top: 10px;"><strong>Proper:</strong> ½ &nbsp; <strong>Improper:</strong> ³⁄₂ &nbsp; <strong>Mixed:</strong> 1½</p>
+                </div>
+                <div id="math-lesson-content-3">
+                    <h3>📖 Lesson 3: Decimals & Percent</h3>
+                    <p><strong>Decimal → Percent:</strong> Multiply by 100 → 0.25 = 25%</p>
+                    <p><strong>Percent → Decimal:</strong> Divide by 100 → 50% = 0.50</p>
+                </div>
+
+                <div id="math-lesson-content-4" style="display:none;">
+                    <h3>📖 Lesson 4: Algebraic Expressions</h3>
+                    <p>An algebraic expression combines numbers, variables, and operations. In 3x + 5, x is the variable, 3 is its coefficient, and 5 is a constant. Combine like terms only: 2x + 4x = 6x.</p>
+                </div>
+                <div id="math-lesson-content-5" style="display:none;">
+                    <h3>📖 Lesson 5: Linear Equations</h3>
+                    <p>A linear equation has a variable with exponent 1. Solve by keeping both sides balanced. Example: x + 7 = 12, so subtract 7 from both sides and x = 5. Check by substituting the answer.</p>
+                </div>
+                <div id="math-lesson-content-6" style="display:none;">
+                    <h3>📖 Lesson 6: Functions and Relations</h3>
+                    <p>A relation is a set of ordered pairs. A function assigns exactly one output to each input. In f(x) = 2x + 1, f(3) = 2(3) + 1 = 7.</p>
+                </div>
+                <div id="math-lesson-content-7" style="display:none;">
+                    <h3>📖 Lesson 7: Sets and Set Operations</h3>
+                    <p>A set is a collection of distinct objects. The union (A ∪ B) contains elements in either set; the intersection (A ∩ B) contains elements common to both. The empty set has no elements.</p>
+                </div>
+                <div id="math-lesson-content-8" style="display:none;">
+                    <h3>📖 Lesson 8: Rational Expressions</h3>
+                    <p>A rational expression is a ratio of polynomials, such as (x + 1)/(x − 2). The denominator cannot equal zero, so x ≠ 2 in this example. Simplify by factoring and cancelling common factors.</p>
+                </div>
+                <div id="math-lesson-content-9" style="display:none;">
+                    <h3>📖 Lesson 9: Exponents and Radicals</h3>
+                    <p>Exponent rules include aᵐ × aⁿ = aᵐ⁺ⁿ and aᵐ/aⁿ = aᵐ⁻ⁿ when the denominator is nonzero. A square root asks which nonnegative number multiplied by itself gives the radicand; √49 = 7.</p>
+                </div>
+                <div id="math-lesson-content-10" style="display:none;">
+                    <h3>📖 Lesson 10: Percent, Markup, and Discount</h3>
+                    <p>Percent means per hundred. To find 15% of ₱800, calculate 0.15 × 800 = ₱120. A discount is subtracted from the original price; a markup is added to a cost.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- MATH REVIEWERS -->
+        <div id="math-reviewers" class="section-content hidden">
+            <div id="math-review-list" class="item-list">
+                <h4 style="margin-bottom: 15px; color: #555;">📝 Select a Reviewer</h4>
+                <div class="item-title" onclick="showSingleItem('math-review', 1)">📝 Reviewer 1: Math Fundamentals</div>
+                <div class="item-title" onclick="showSingleItem('math-review', 2)">📝 Reviewer 2: Fractions Cheat Sheet</div>
+            </div>
+            <div id="math-review-view" class="single-view">
+                <span class="back-btn" onclick="backToList('math-review')">← Back to Reviewers List</span>
+                <div id="math-review-content-1">
+                    <h3>📝 Reviewer 1: Math Fundamentals</h3>
+                    <p>✅ Order of Operations: <strong>PEMDAS</strong> — Parentheses, Exponents, Multiplication/Division, Addition/Subtraction</p>
+                    <p>✅ Any number × 1 = the same number</p>
+                    <p>✅ Any number + 0 = the same number</p>
+                </div>
+                <div id="math-review-content-2">
+                    <h3>📝 Reviewer 2: Fractions Cheat Sheet</h3>
+                    <p>✅ Add/Subtract: Make denominators the same first!</p>
+                    <p>✅ Multiply: Straight across — numerator × numerator, denominator × denominator</p>
+                    <p>✅ Divide: Keep, Change, Flip → ⅔ ÷ ½ = ⅔ × ²⁄₁</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- MATH QUIZ -->
+        <div id="math-quizzes" class="section-content hidden">
+            <h4 style="margin-bottom: 15px; color: #555;">❓ Answer all questions, then click Submit Answers</h4>
+            <div class="quiz-item" data-qid="mq1" data-answer="b">
+                <p><strong>1. What is 25% as a decimal?</strong></p>
+                <div class="option" data-value="a" onclick="selectOption(this)">A. 2.5</div>
+                <div class="option" data-value="b" onclick="selectOption(this)">B. 0.25</div>
+                <div class="option" data-value="c" onclick="selectOption(this)">C. 0.025</div>
+                <div class="feedback">✅ Correct! 25 ÷ 100 = 0.25</div>
+            </div>
+            <div class="quiz-item" data-qid="mq2" data-answer="a">
+                <p><strong>2. In the fraction ³⁄₄, what is the numerator?</strong></p>
+                <div class="option" data-value="a" onclick="selectOption(this)">A. 3</div>
+                <div class="option" data-value="b" onclick="selectOption(this)">B. 4</div>
+                <div class="option" data-value="c" onclick="selectOption(this)">C. 34</div>
+                <div class="feedback">✅ Correct! Top number = numerator, bottom = denominator</div>
+            </div>
+            <div class="quiz-item" data-qid="mq3" data-answer="c">
+                <p><strong>3. Which comes FIRST in PEMDAS?</strong></p>
+                <div class="option" data-value="a" onclick="selectOption(this)">A. Multiplication</div>
+                <div class="option" data-value="b" onclick="selectOption(this)">B. Exponents</div>
+                <div class="option" data-value="c" onclick="selectOption(this)">C. Parentheses</div>
+                <div class="feedback">✅ Correct! P = Parentheses comes first</div>
+            </div>
+            <button class="submit-quiz-btn" onclick="submitAllQuiz('math')">📝 Submit Answers</button>
+        </div>
+    </div>
+
+    <!-- ==================================================
+                    🔬 GENERAL SCIENCE
+    ================================================== -->
+    <div id="subject-science" class="page">
+        <a href="#" class="back-btn" onclick="showPage('home'); backToStrands()">← Back To Select Subject</a>
+        <h2>🔬 General Science</h2>
+        <div class="section-tabs">
+            <button class="section-tab active" onclick="switchSection('science-lessons')" id="tab-science-lessons">📖 Lessons</button>
+            <button class="section-tab" onclick="switchSection('science-reviewers')" id="tab-science-reviewers">📝 Reviewers</button>
+            <button class="section-tab" onclick="switchSection('science-quizzes')" id="tab-science-quizzes">❓ Quizzes</button>
+        </div>
+
+        <div id="science-lessons" class="section-content">
+            <div id="science-lesson-list" class="item-list">
+                <h4 style="margin-bottom: 15px; color: #555;">📖 Select a Lesson</h4>
+                <div class="item-title" onclick="showSingleItem('science-lesson', 1)">📖 Lesson 1: What is Matter?</div>
+                <div class="item-title" onclick="showSingleItem('science-lesson', 2)">📖 Lesson 2: States of Matter</div>
+                <div class="item-title" onclick="showSingleItem('science-lesson', 3)">📖 Lesson 3: Changes in Matter</div>
+
+                <div class="item-title" onclick="showSingleItem('science-lesson', 4)">📖 Lesson 4: Atoms and Molecules</div>
+                <div class="item-title" onclick="showSingleItem('science-lesson', 5)">📖 Lesson 5: Elements, Compounds, and Mixtures</div>
+                <div class="item-title" onclick="showSingleItem('science-lesson', 6)">📖 Lesson 6: Force and Motion</div>
+                <div class="item-title" onclick="showSingleItem('science-lesson', 7)">📖 Lesson 7: Energy and Its Forms</div>
+                <div class="item-title" onclick="showSingleItem('science-lesson', 8)">📖 Lesson 8: Heat Transfer</div>
+                <div class="item-title" onclick="showSingleItem('science-lesson', 9)">📖 Lesson 9: Ecosystems and Food Chains</div>
+                <div class="item-title" onclick="showSingleItem('science-lesson', 10)">📖 Lesson 10: Weather and Climate</div>
+            </div>
+            <div id="science-lesson-view" class="single-view">
+                <span class="back-btn" onclick="backToList('science-lesson')">← Back to Lessons List</span>
+                <div id="science-lesson-content-1">
+                    <h3>📖 Lesson 1: What is Matter?</h3>
+                    <p>Matter is anything that has mass and takes up space. Everything around you is matter — air, water, books, even your body!</p>
+                </div>
+                <div id="science-lesson-content-2">
+                    <h3>📖 Lesson 2: States of Matter</h3>
+                    <p><strong>Solid:</strong> Definite shape & volume — e.g., rock, book</p>
+                    <p><strong>Liquid:</strong> Definite volume, takes shape — e.g., water, milk</p>
+                    <p><strong>Gas:</strong> No definite shape or volume — e.g., air, oxygen</p>
+                </div>
+                <div id="science-lesson-content-3">
+                    <h3>📖 Lesson 3: Changes in Matter</h3>
+                    <p><strong>Physical Change:</strong> Only appearance changes — same substance (melting ice)</p>
+                    <p><strong>Chemical Change:</strong> New substance formed (burning wood, rusting)</p>
+                </div>
+
+                <div id="science-lesson-content-4" style="display:none;">
+                    <h3>📖 Lesson 4: Atoms and Molecules</h3>
+                    <p>An atom is the basic unit of an element. Atoms contain protons and neutrons in the nucleus and electrons around it. A molecule forms when two or more atoms bond, such as H₂O.</p>
+                </div>
+                <div id="science-lesson-content-5" style="display:none;">
+                    <h3>📖 Lesson 5: Elements, Compounds, and Mixtures</h3>
+                    <p>An element contains one kind of atom. A compound has elements chemically combined in fixed proportions. A mixture combines substances physically and can often be separated by methods such as filtration.</p>
+                </div>
+                <div id="science-lesson-content-6" style="display:none;">
+                    <h3>📖 Lesson 6: Force and Motion</h3>
+                    <p>A force is a push or pull that can change an object's motion. Speed is distance divided by time. A balanced force does not change an object's motion; an unbalanced force causes acceleration.</p>
+                </div>
+                <div id="science-lesson-content-7" style="display:none;">
+                    <h3>📖 Lesson 7: Energy and Its Forms</h3>
+                    <p>Energy is the ability to do work or cause change. Common forms include kinetic, potential, thermal, chemical, electrical, and light energy. Energy can transfer or change form.</p>
+                </div>
+                <div id="science-lesson-content-8" style="display:none;">
+                    <h3>📖 Lesson 8: Heat Transfer</h3>
+                    <p>Conduction transfers heat through direct contact, convection transfers heat through the movement of fluids, and radiation transfers energy through waves. Heat naturally flows from warmer objects to cooler ones.</p>
+                </div>
+                <div id="science-lesson-content-9" style="display:none;">
+                    <h3>📖 Lesson 9: Ecosystems and Food Chains</h3>
+                    <p>An ecosystem includes living organisms and their nonliving environment. Producers make their own food, consumers eat other organisms, and decomposers break down dead matter. Arrows in a food chain show energy flow.</p>
+                </div>
+                <div id="science-lesson-content-10" style="display:none;">
+                    <h3>📖 Lesson 10: Weather and Climate</h3>
+                    <p>Weather describes short-term atmospheric conditions, such as today's rain or temperature. Climate describes long-term patterns in a region. Temperature, air pressure, wind, humidity, and precipitation help describe weather.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="science-reviewers" class="section-content hidden">
+            <div id="science-review-list" class="item-list">
+                <h4 style="margin-bottom: 15px; color: #555;">📝 Select a Reviewer</h4>
+                <div class="item-title" onclick="showSingleItem('science-review', 1)">📝 Reviewer 1: Matter Basics</div>
+                <div class="item-title" onclick="showSingleItem('science-review', 2)">📝 Reviewer 2: States of Matter</div>
+            </div>
+            <div id="science-review-view" class="single-view">
+                <span class="back-btn" onclick="backToList('science-review')">← Back to Reviewers List</span>
+                <div id="science-review-content-1">
+                    <h3>📝 Reviewer 1: Matter Basics</h3>
+                    <p>✅ Matter = mass + volume</p>
+                    <p>✅ Mass ≠ Weight — mass stays the same everywhere</p>
+                </div>
+                <div id="science-review-content-2">
+                    <h3>📝 Reviewer 2: States of Matter</h3>
+                    <p>✅ Solid → Liquid = Melting</p>
+                    <p>✅ Liquid → Gas = Evaporation</p>
+                    <p>✅ Gas → Liquid = Condensation</p>
+                    <p>✅ Liquid → Solid = Freezing</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="science-quizzes" class="section-content hidden">
+            <h4 style="margin-bottom: 15px; color: #555;">❓ Answer all questions, then click Submit Answers</h4>
+            <div class="quiz-item" data-qid="sq1" data-answer="c">
+                <p><strong>1. Which has NO fixed shape and NO fixed volume?</strong></p>
+                <div class="option" data-value="a" onclick="selectOption(this)">A. Solid</div>
+                <div class="option" data-value="b" onclick="selectOption(this)">B. Liquid</div>
+                <div class="option" data-value="c" onclick="selectOption(this)">C. Gas</div>
+                <div class="feedback">✅ Correct! Gases fill their container completely.</div>
+            </div>
+            <div class="quiz-item" data-qid="sq2" data-answer="a">
+                <p><strong>2. Cutting paper is what kind of change?</strong></p>
+                <div class="option" data-value="a" onclick="selectOption(this)">A. Physical</div>
+                <div class="option" data-value="b" onclick="selectOption(this)">B. Chemical</div>
+                <div class="option" data-value="c" onclick="selectOption(this)">C. Both</div>
+                <div class="feedback">✅ Correct! No new substance is made.</div>
+            </div>
+            <button class="submit-quiz-btn" onclick="submitAllQuiz('science')">📝 Submit Answers</button>
+        </div>
+    </div>
+
+    <!-- ==================================================
+                    🇵🇭 PHILIPPINE HISTORY
+    ================================================== -->
+    <div id="subject-history" class="page">
+        <a href="#" class="back-btn" onclick="showPage('home'); backToStrands()">← Back To Select Subject</a>
+        <h2>🇵🇭 Phil. History & Society</h2>
+        <div class="section-tabs">
+            <button class="section-tab active" onclick="switchSection('history-lessons')" id="tab-history-lessons">📖 Lessons</button>
+            <button class="section-tab" onclick="switchSection('history-reviewers')" id="tab-history-reviewers">📝 Reviewers</button>
+            <button class="section-tab" onclick="switchSection('history-quizzes')" id="tab-history-quizzes">❓ Quizzes</button>
+        </div>
+
+        <div id="history-lessons" class="section-content">
+            <div id="history-lesson-list" class="item-list">
+                <h4 style="margin-bottom: 15px; color: #555;">📖 Select a Lesson</h4>
+                <div class="item-title" onclick="showSingleItem('history-lesson', 1)">📖 Lesson 1: Our Pre-Colonial Past</div>
+                <div class="item-title" onclick="showSingleItem('history-lesson', 2)">📖 Lesson 2: Spanish Colonization</div>
+                <div class="item-title" onclick="showSingleItem('history-lesson', 3)">📖 Lesson 3: The Philippine Revolution</div>
+
+                <div class="item-title" onclick="showSingleItem('history-lesson', 4)">📖 Lesson 4: Pre-Colonial Filipino Communities</div>
+                <div class="item-title" onclick="showSingleItem('history-lesson', 5)">📖 Lesson 5: The Arrival of Islam in the Philippines</div>
+                <div class="item-title" onclick="showSingleItem('history-lesson', 6)">📖 Lesson 6: The Galleon Trade</div>
+                <div class="item-title" onclick="showSingleItem('history-lesson', 7)">📖 Lesson 7: The Propaganda Movement</div>
+                <div class="item-title" onclick="showSingleItem('history-lesson', 8)">📖 Lesson 8: The Katipunan and Revolution</div>
+                <div class="item-title" onclick="showSingleItem('history-lesson', 9)">📖 Lesson 9: The First Philippine Republic</div>
+                <div class="item-title" onclick="showSingleItem('history-lesson', 10)">📖 Lesson 10: Philippines During World War II</div>
+            </div>
+            <div id="history-lesson-view" class="single-view">
+                <span class="back-btn" onclick="backToList('history-lesson')">← Back to Lessons List</span>
+                <div id="history-lesson-content-1">
+                    <h3>📖 Lesson 1: Our Pre-Colonial Past</h3>
+                    <p>Before the Spaniards arrived, Filipinos already had their own government (Barangay), writing system (Baybayin), social structure, and trading with neighboring Asian countries.</p>
+                </div>
+                <div id="history-lesson-content-2">
+                    <h3>📖 Lesson 2: Spanish Colonization</h3>
+                    <p>1521 — Arrival of Ferdinand Magellan</p>
+                    <p>1565 — Spanish rule began under Miguel López de Legazpi</p>
+                    <p>333 years of Spanish colonization followed.</p>
+                </div>
+                <div id="history-lesson-content-3">
+                    <h3>📖 Lesson 3: The Philippine Revolution</h3>
+                    <p>1896 — Revolution started led by Andres Bonifacio and the Katipunan.</p>
+                    <p>June 12, 1898 — Philippine Independence declared in Kawit, Cavite by Emilio Aguinaldo.</p>
+                </div>
+
+                <div id="history-lesson-content-4" style="display:none;">
+                    <h3>📖 Lesson 4: Pre-Colonial Filipino Communities</h3>
+                    <p>Before Spanish colonization, many communities were organized into barangays led by a datu. People farmed, fished, crafted goods, traded with neighboring communities, and maintained diverse customs and beliefs.</p>
+                </div>
+                <div id="history-lesson-content-5" style="display:none;">
+                    <h3>📖 Lesson 5: The Arrival of Islam in the Philippines</h3>
+                    <p>Islam spread to parts of the Philippines through trade and religious teachers before Spanish rule. Muslim sultanates developed especially in Mindanao and Sulu, with their own political and cultural traditions.</p>
+                </div>
+                <div id="history-lesson-content-6" style="display:none;">
+                    <h3>📖 Lesson 6: The Galleon Trade</h3>
+                    <p>The Manila–Acapulco Galleon Trade connected the Philippines and New Spain from 1565 to 1815. It moved goods across the Pacific and influenced Manila's role in international trade.</p>
+                </div>
+                <div id="history-lesson-content-7" style="display:none;">
+                    <h3>📖 Lesson 7: The Propaganda Movement</h3>
+                    <p>In the late 19th century, Filipino reformists called for changes under Spanish rule. Writers such as José Rizal, Marcelo H. del Pilar, and Graciano López Jaena used essays and publications to argue for reforms.</p>
+                </div>
+                <div id="history-lesson-content-8" style="display:none;">
+                    <h3>📖 Lesson 8: The Katipunan and Revolution</h3>
+                    <p>The Katipunan was a secret society founded in 1892 that sought independence from Spain. The Philippine Revolution began in 1896, with leaders including Andrés Bonifacio and other revolutionaries.</p>
+                </div>
+                <div id="history-lesson-content-9" style="display:none;">
+                    <h3>📖 Lesson 9: The First Philippine Republic</h3>
+                    <p>On June 12, 1898, Emilio Aguinaldo proclaimed Philippine independence. The Malolos Constitution was adopted and the First Philippine Republic was inaugurated in 1899, amid conflict with the United States.</p>
+                </div>
+                <div id="history-lesson-content-10" style="display:none;">
+                    <h3>📖 Lesson 10: Philippines During World War II</h3>
+                    <p>Japan occupied the Philippines during World War II from 1942 until Allied and Filipino forces regained control in 1944–1945. The war caused widespread destruction and hardship for civilians.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="history-reviewers" class="section-content hidden">
+            <div id="history-review-list" class="item-list">
+                <h4 style="margin-bottom: 15px; color: #555;">📝 Select a Reviewer</h4>
+                <div class="item-title" onclick="showSingleItem('history-review', 1)">📝 Reviewer 1: Key Dates & Events</div>
+                <div class="item-title" onclick="showSingleItem('history-review', 2)">📝 Reviewer 2: National Heroes</div>
+            </div>
+            <div id="history-review-view" class="single-view">
+                <span class="back-btn" onclick="backToList('history-review')">← Back to Reviewers List</span>
+                <div id="history-review-content-1">
+                    <h3>📝 Reviewer 1: Key Dates & Events</h3>
+                    <p>✅ 1521 — Magellan arrived in the Philippines</p>
+                    <p>✅ June 12, 1898 — Philippine Independence Day</p>
+                    <p>✅ 1896 — Start of the Philippine Revolution</p>
+                </div>
+                <div id="history-review-content-2">
+                    <h3>📝 Reviewer 2: National Heroes</h3>
+                    <p>✅ Jose Rizal — National Hero, wrote Noli Me Tangere & El Filibusterismo</p>
+                    <p>✅ Andres Bonifacio — Father of the Philippine Revolution, founded Katipunan</p>
+                    <p>✅ Emilio Aguinaldo — First President of the Philippines</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="history-quizzes" class="section-content hidden">
+            <h4 style="margin-bottom: 15px; color: #555;">❓ Answer all questions, then click Submit Answers</h4>
+            <div class="quiz-item" data-qid="hq1" data-answer="b">
+                <p><strong>1. When is Philippine Independence Day?</strong></p>
+                <div class="option" data-value="a" onclick="selectOption(this)">A. July 4</div>
+                <div class="option" data-value="b" onclick="selectOption(this)">B. June 12</div>
+                <div class="option" data-value="c" onclick="selectOption(this)">C. May 1</div>
+                <div class="feedback">✅ Correct! Declared on June 12, 1898 in Kawit, Cavite.</div>
+            </div>
+            <div class="quiz-item" data-qid="hq2" data-answer="a">
+                <p><strong>2. Who founded the Katipunan?</strong></p>
+                <div class="option" data-value="a" onclick="selectOption(this)">A. Andres Bonifacio</div>
+                <div class="option" data-value="b" onclick="selectOption(this)">B. Jose Rizal</div>
+                <div class="option" data-value="c" onclick="selectOption(this)">C. Emilio Aguinaldo</div>
+                <div class="feedback">✅ Correct! KKK was founded in 1896 by Andres Bonifacio.</div>
+            </div>
+            <button class="submit-quiz-btn" onclick="submitAllQuiz('history')">📝 Submit Answers</button>
+        </div>
+    </div>
+
+    <!-- ==================================================
+                    💬 EFFECTIVE COMMUNICATION
+    ================================================== -->
+    <div id="subject-comm" class="page">
+        <a href="#" class="back-btn" onclick="showPage('home'); backToStrands()">← Back To Select Subject</a>
+        <h2>💬 Effective Communication</h2>
+        <div class="section-tabs">
+            <button class="section-tab active" onclick="switchSection('comm-lessons')" id="tab-comm-lessons">📖 Lessons</button>
+            <button class="section-tab" onclick="switchSection('comm-reviewers')" id="tab-comm-reviewers">📝 Reviewers</button>
+            <button class="section-tab" onclick="switchSection('comm-quizzes')" id="tab-comm-quizzes">❓ Quizzes</button>
+        </div>
+
+        <div id="comm-lessons" class="section-content">
+            <div id="comm-lesson-list" class="item-list">
+                <h4 style="margin-bottom: 15px; color: #555;">📖 Select a Lesson</h4>
+                <div class="item-title" onclick="showSingleItem('comm-lesson', 1)">📖 Lesson 1: The Communication Process</div>
+                <div class="item-title" onclick="showSingleItem('comm-lesson', 2)">📖 Lesson 2: Verbal & Non-Verbal Communication</div>
+                <div class="item-title" onclick="showSingleItem('comm-lesson', 3)">📖 Lesson 3: Barriers to Communication</div>
+
+                <div class="item-title" onclick="showSingleItem('comm-lesson', 4)">📖 Lesson 4: Purpose and Audience</div>
+                <div class="item-title" onclick="showSingleItem('comm-lesson', 5)">📖 Lesson 5: Active Listening</div>
+                <div class="item-title" onclick="showSingleItem('comm-lesson', 6)">📖 Lesson 6: Written Communication</div>
+                <div class="item-title" onclick="showSingleItem('comm-lesson', 7)">📖 Lesson 7: Visual Communication</div>
+                <div class="item-title" onclick="showSingleItem('comm-lesson', 8)">📖 Lesson 8: Public Speaking Basics</div>
+                <div class="item-title" onclick="showSingleItem('comm-lesson', 9)">📖 Lesson 9: Giving and Receiving Feedback</div>
+                <div class="item-title" onclick="showSingleItem('comm-lesson', 10)">📖 Lesson 10: Communication in Digital Spaces</div>
+            </div>
+            <div id="comm-lesson-view" class="single-view">
+                <span class="back-btn" onclick="backToList('comm-lesson')">← Back to Lessons List</span>
+                <div id="comm-lesson-content-1">
+                    <h3>📖 Lesson 1: The Communication Process</h3>
+                    <p><strong>Sender → Message → Channel → Receiver → Feedback</strong></p>
+                    <p>Communication is the process of sharing information, ideas, and feelings between two or more people.</p>
+                </div>
+                <div id="comm-lesson-content-2">
+                    <h3>📖 Lesson 2: Verbal & Non-Verbal Communication</h3>
+                    <p><strong>Verbal:</strong> Using words — speaking, writing</p>
+                    <p><strong>Non-Verbal:</strong> Without words — facial expressions, gestures, posture, eye contact</p>
+                </div>
+                <div id="comm-lesson-content-3">
+                    <h3>📖 Lesson 3: Barriers to Communication</h3>
+                    <p>Things that prevent clear communication:</p>
+                    <p>• Noise • Language differences • Cultural differences • Distractions</p>
+                </div>
+
+                <div id="comm-lesson-content-4" style="display:none;">
+                    <h3>📖 Lesson 4: Purpose and Audience</h3>
+                    <p>Effective communication begins by identifying the purpose and audience. A message may inform, persuade, entertain, or express feelings. Choose details, tone, and vocabulary that suit the listeners or readers.</p>
+                </div>
+                <div id="comm-lesson-content-5" style="display:none;">
+                    <h3>📖 Lesson 5: Active Listening</h3>
+                    <p>Active listening means giving attention, avoiding interruptions, asking clarifying questions, and paraphrasing key points. It helps reduce misunderstandings and shows respect for the speaker.</p>
+                </div>
+                <div id="comm-lesson-content-6" style="display:none;">
+                    <h3>📖 Lesson 6: Written Communication</h3>
+                    <p>Written communication includes letters, emails, reports, and messages. Organize ideas clearly, use appropriate language, check grammar and spelling, and consider the reader's needs.</p>
+                </div>
+                <div id="comm-lesson-content-7" style="display:none;">
+                    <h3>📖 Lesson 7: Visual Communication</h3>
+                    <p>Visual communication uses images, charts, diagrams, symbols, and layout to explain information. Keep visuals readable, label data clearly, and use visuals that support rather than distract from the message.</p>
+                </div>
+                <div id="comm-lesson-content-8" style="display:none;">
+                    <h3>📖 Lesson 8: Public Speaking Basics</h3>
+                    <p>A clear speech usually has an introduction, organized main points, and a conclusion. Practice aloud, speak at a steady pace, use appropriate volume, and make eye contact when suitable.</p>
+                </div>
+                <div id="comm-lesson-content-9" style="display:none;">
+                    <h3>📖 Lesson 9: Giving and Receiving Feedback</h3>
+                    <p>Helpful feedback is specific, respectful, and focused on the message or behavior rather than personal attacks. When receiving feedback, listen carefully, ask questions, and consider useful suggestions.</p>
+                </div>
+                <div id="comm-lesson-content-10" style="display:none;">
+                    <h3>📖 Lesson 10: Communication in Digital Spaces</h3>
+                    <p>Digital communication includes chat, email, video calls, and online posts. Use respectful language, protect private information, check facts before sharing, and consider how a message may be interpreted without facial cues.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="comm-reviewers" class="section-content hidden">
+            <div id="comm-review-list" class="item-list">
+                <h4 style="margin-bottom: 15px; color: #555;">📝 Select a Reviewer</h4>
+                <div class="item-title" onclick="showSingleItem('comm-review', 1)">📝 Reviewer 1: Communication Basics</div>
+                <div class="item-title" onclick="showSingleItem('comm-review', 2)">📝 Reviewer 2: Tips for Effective Speaking</div>
+            </div>
+            <div id="comm-review-view" class="single-view">
+                <span class="back-btn" onclick="backToList('comm-review')">← Back to Reviewers List</span>
+                <div id="comm-review-content-1">
+                    <h3>📝 Reviewer 1: Communication Basics</h3>
+                    <p>✅ 4 Major Types: Verbal, Non-Verbal, Written, Visual</p>
+                    <p>✅ Good communication = clear message + active listening</p>
+                </div>
+                <div id="comm-review-content-2">
+                    <h3>📝 Reviewer 2: Tips for Effective Speaking</h3>
+                    <p>✅ Speak clearly and at a good pace</p>
+                    <p>✅ Maintain eye contact with your audience</p>
+                    <p>✅ Use simple and understandable language</p>
+                    <p>✅ Be confident and organized</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="comm-quizzes" class="section-content hidden">
+            <h4 style="margin-bottom: 15px; color: #555;">❓ Answer all questions, then click Submit Answers</h4>
+            <div class="quiz-item" data-qid="cq1" data-answer="b">
+                <p><strong>1. Who starts the communication process?</strong></p>
+                <div class="option" data-value="a" onclick="selectOption(this)">A. Receiver</div>
+                <div class="option" data-value="b" onclick="selectOption(this)">B. Sender</div>
+                <div class="option" data-value="c" onclick="selectOption(this)">C. Channel</div>
+                <div class="feedback">✅ Correct! The sender creates and sends the message.</div>
+            </div>
+            <div class="quiz-item" data-qid="cq2" data-answer="c">
+                <p><strong>2. Which is an example of NON-VERBAL communication?</strong></p>
+                <div class="option" data-value="a" onclick="selectOption(this)">A. Speaking</div>
+                <div class="option" data-value="b" onclick="selectOption(this)">B. Writing an email</div>
+                <div class="option" data-value="c" onclick="selectOption(this)">C. Smiling</div>
+                <div class="feedback">✅ Correct! Facial expressions are non-verbal — no words used.</div>
+            </div>
+            <button class="submit-quiz-btn" onclick="submitAllQuiz('comm')">📝 Submit Answers</button>
+        </div>
+    </div>
+</div>
+
+
+    <!-- COMPUTER PROGRAMMING -->
+    <div id="subject-programming" class="page">
+        <a href="#" class="back-btn" onclick="showPage('home'); backToStrands()">←Back To Select Subject</a>
+        <h2>💻 Computer Programming</h2>
+        <div class="section-tabs">
+            <button class="section-tab active" onclick="switchSection('programming-lessons')" id="tab-programming-lessons">📖 Lessons</button>
+            <button class="section-tab" onclick="switchSection('programming-reviewers')" id="tab-programming-reviewers">📝 Reviewers</button>
+            <button class="section-tab" onclick="switchSection('programming-quizzes')" id="tab-programming-quizzes">❓ Quizzes</button>
+        </div>
+
+        <div id="programming-lessons" class="section-content">
+            <div id="programming-lesson-list" class="item-list">
+                <h4 style="margin-bottom:15px;color:#555;">📖 Select a Lesson</h4>
+                <div class="item-title" onclick="showSingleItem('programming-lesson',1)">📖 Lesson 1: Introduction to Programming</div>
+                <div class="item-title" onclick="showSingleItem('programming-lesson',2)">📖 Lesson 2: Variables and Data Types</div>
+                <div class="item-title" onclick="showSingleItem('programming-lesson',3)">📖 Lesson 3: Input, Output, and Operators</div>
+
+                <div class="item-title" onclick="showSingleItem('programming-lesson', 4)">📖 Lesson 4: Algorithms and Flowcharts</div>
+                <div class="item-title" onclick="showSingleItem('programming-lesson', 5)">📖 Lesson 5: Conditional Statements</div>
+                <div class="item-title" onclick="showSingleItem('programming-lesson', 6)">📖 Lesson 6: Loops and Repetition</div>
+                <div class="item-title" onclick="showSingleItem('programming-lesson', 7)">📖 Lesson 7: Functions</div>
+                <div class="item-title" onclick="showSingleItem('programming-lesson', 8)">📖 Lesson 8: Lists and Collections</div>
+                <div class="item-title" onclick="showSingleItem('programming-lesson', 9)">📖 Lesson 9: Debugging and Testing</div>
+                <div class="item-title" onclick="showSingleItem('programming-lesson', 10)">📖 Lesson 10: Introduction to HTML</div>
+            </div>
+            <div id="programming-lesson-view" class="single-view">
+                <span class="back-btn" onclick="backToList('programming-lesson')">← Back to Lessons List</span>
+                <div id="programming-lesson-content-1">
+                    <h3>📖 Lesson 1: Introduction to Programming</h3>
+                    <p>Programming is the process of writing instructions that a computer can execute to perform a task or solve a problem.</p>
+                    <p><strong>Program:</strong> A set of instructions written in a programming language.</p>
+                    <p><strong>Algorithm:</strong> A step-by-step procedure for solving a problem.</p>
+                    <p><strong>Common languages:</strong> Python, Java, JavaScript, and C++.</p>
+                    <p><strong>Good practice:</strong> Understand the problem, plan the steps, write the code, test it, and fix errors.</p>
+                </div>
+                <div id="programming-lesson-content-2">
+                    <h3>📖 Lesson 2: Variables and Data Types</h3>
+                    <p>A <strong>variable</strong> is a named place used to store a value that a program can use.</p>
+                    <p><strong>Integer:</strong> Whole numbers, such as <code>12</code>.</p>
+                    <p><strong>Float/Decimal:</strong> Numbers with a decimal point, such as <code>3.14</code>.</p>
+                    <p><strong>String:</strong> Text, such as <code>"Hello"</code>.</p>
+                    <p><strong>Boolean:</strong> A true-or-false value.</p>
+                    <p>Example in Python: <code>student_name = "Ana"</code> and <code>age = 16</code>.</p>
+                </div>
+                <div id="programming-lesson-content-3">
+                    <h3>📖 Lesson 3: Input, Output, and Operators</h3>
+                    <p><strong>Input</strong> receives information from the user. <strong>Output</strong> displays information to the user.</p>
+                    <p>In Python, <code>input()</code> receives text and <code>print()</code> displays output.</p>
+                    <p><strong>Arithmetic operators:</strong> <code>+</code> addition, <code>-</code> subtraction, <code>*</code> multiplication, <code>/</code> division, and <code>%</code> remainder.</p>
+                    <p>Example: <code>print(5 + 3)</code> displays <code>8</code>.</p>
+                </div>
+
+                <div id="programming-lesson-content-4" style="display:none;">
+                    <h3>📖 Lesson 4: Algorithms and Flowcharts</h3>
+                    <p>An algorithm is a sequence of steps for solving a problem. A flowchart represents those steps with symbols: ovals for start/end, rectangles for processes, diamonds for decisions, and arrows for flow.</p>
+                </div>
+                <div id="programming-lesson-content-5" style="display:none;">
+                    <h3>📖 Lesson 5: Conditional Statements</h3>
+                    <p>A conditional statement runs code depending on whether a condition is true. In Python, if, elif, and else select which block runs. Indentation determines which statements belong to each block.</p>
+                </div>
+                <div id="programming-lesson-content-6" style="display:none;">
+                    <h3>📖 Lesson 6: Loops and Repetition</h3>
+                    <p>Loops repeat instructions. A for loop is useful for iterating through a sequence or range; a while loop repeats while its condition is true. Make sure a while loop can eventually stop.</p>
+                </div>
+                <div id="programming-lesson-content-7" style="display:none;">
+                    <h3>📖 Lesson 7: Functions</h3>
+                    <p>A function is a reusable block of code that performs a task. Functions can accept parameters and return values. In Python, define one with def, followed by its name and parentheses.</p>
+                </div>
+                <div id="programming-lesson-content-8" style="display:none;">
+                    <h3>📖 Lesson 8: Lists and Collections</h3>
+                    <p>A list stores multiple items in one ordered collection. Python lists use square brackets, such as scores = [85, 90, 78]. Indexing starts at 0, so scores[0] is 85.</p>
+                </div>
+                <div id="programming-lesson-content-9" style="display:none;">
+                    <h3>📖 Lesson 9: Debugging and Testing</h3>
+                    <p>A syntax error breaks language rules; a runtime error happens while a program runs; a logic error produces an incorrect result. Test normal, boundary, and unusual inputs, then fix and retest.</p>
+                </div>
+                <div id="programming-lesson-content-10" style="display:none;">
+                    <h3>📖 Lesson 10: Introduction to HTML</h3>
+                    <p>HTML structures content on web pages using elements called tags. Headings use h1–h6, paragraphs use p, links use a, and images use img. Many elements have opening and closing tags.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="programming-reviewers" class="section-content hidden">
+            <div id="programming-review-list" class="item-list">
+                <h4 style="margin-bottom:15px;color:#555;">📝 Select a Reviewer</h4>
+                <div class="item-title" onclick="showSingleItem('programming-review',1)">📝 Reviewer 1: Programming Fundamentals</div>
+                <div class="item-title" onclick="showSingleItem('programming-review',2)">📝 Reviewer 2: Variables and Operators</div>
+            </div>
+            <div id="programming-review-view" class="single-view">
+                <span class="back-btn" onclick="backToList('programming-review')">← Back to Reviewers List</span>
+                <div id="programming-review-content-1">
+                    <h3>📝 Reviewer 1: Programming Fundamentals</h3>
+                    <p>✅ An algorithm is a step-by-step solution to a problem.</p>
+                    <p>✅ A program is a set of instructions a computer follows.</p>
+                    <p>✅ Syntax refers to the rules for writing code correctly.</p>
+                    <p>✅ Debugging means finding and fixing errors in a program.</p>
+                </div>
+                <div id="programming-review-content-2">
+                    <h3>📝 Reviewer 2: Variables and Operators</h3>
+                    <p>✅ Variables store values under a name.</p>
+                    <p>✅ Strings contain text; integers contain whole numbers.</p>
+                    <p>✅ Boolean values are <code>true</code> or <code>false</code> (in Python: <code>True</code> and <code>False</code>).</p>
+                    <p>✅ <code>==</code> compares values; <code>=</code> assigns a value.</p>
+                    <p>✅ <code>%</code> returns the remainder after division.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="programming-quizzes" class="section-content hidden">
+            <h4 style="margin-bottom:15px;color:#555;">❓ Answer the questions, then click Submit Answers</h4>
+            <div class="quiz-item" data-qid="pq1" data-answer="b">
+                <p><strong>1. What is an algorithm?</strong></p>
+                <div class="option" data-value="a" onclick="selectOption(this)">A. A computer monitor</div>
+                <div class="option" data-value="b" onclick="selectOption(this)">B. Step-by-step instructions for solving a problem</div>
+                <div class="option" data-value="c" onclick="selectOption(this)">C. A type of keyboard</div>
+                <div class="feedback">✅ Correct! An algorithm describes steps to solve a problem.</div>
+            </div>
+            <div class="quiz-item" data-qid="pq2" data-answer="a">
+                <p><strong>2. Which data type is used for text?</strong></p>
+                <div class="option" data-value="a" onclick="selectOption(this)">A. String</div>
+                <div class="option" data-value="b" onclick="selectOption(this)">B. Integer</div>
+                <div class="option" data-value="c" onclick="selectOption(this)">C. Boolean</div>
+                <div class="feedback">✅ Correct! A string stores text.</div>
+            </div>
+            <div class="quiz-item" data-qid="pq3" data-answer="c">
+                <p><strong>3. Which Python command displays output?</strong></p>
+                <div class="option" data-value="a" onclick="selectOption(this)">A. input()</div>
+                <div class="option" data-value="b" onclick="selectOption(this)">B. scan()</div>
+                <div class="option" data-value="c" onclick="selectOption(this)">C. print()</div>
+                <div class="feedback">✅ Correct! <code>print()</code> displays output.</div>
+            </div>
+            <button class="submit-quiz-btn" onclick="submitAllQuiz('programming')">📝 Submit Answers</button>
+        </div>
+    </div>
+
+    <!-- MABISANG KOMUNIKASYON -->
+    <div id="subject-mabisang" class="page">
+        <a href="#" class="back-btn" onclick="showPage('home'); backToStrands()">← Back To Select Subject</a>
+        <h2>💬 Mabisang Komunikasyon</h2>
+        <div class="section-tabs">
+            <button class="section-tab active" onclick="switchSection('mabisang-lessons')" id="tab-mabisang-lessons">📖 Lessons</button>
+            <button class="section-tab" onclick="switchSection('mabisang-reviewers')" id="tab-mabisang-reviewers">📝 Reviewers</button>
+            <button class="section-tab" onclick="switchSection('mabisang-quizzes')" id="tab-mabisang-quizzes">❓ Quizzes</button>
+        </div>
+
+        <div id="mabisang-lessons" class="section-content">
+            <div id="mabisang-lesson-list" class="item-list">
+                <h4 style="margin-bottom:15px;color:#555;">📖 Pumili ng Aralin</h4>
+                <div class="item-title" onclick="showSingleItem('mabisang-lesson',1)">📖 Aralin 1: Kahulugan at Kahalagahan ng Komunikasyon</div>
+                <div class="item-title" onclick="showSingleItem('mabisang-lesson',2)">📖 Aralin 2: Mga Elemento ng Komunikasyon</div>
+                <div class="item-title" onclick="showSingleItem('mabisang-lesson',3)">📖 Aralin 3: Wasto at Angkop na Paggamit ng Wika</div>
+
+                <div class="item-title" onclick="showSingleItem('mabisang-lesson', 4)">📖 Lesson 4: Berbal at Di-Berbal na Komunikasyon</div>
+                <div class="item-title" onclick="showSingleItem('mabisang-lesson', 5)">📖 Lesson 5: Antas at Barayti ng Wika</div>
+                <div class="item-title" onclick="showSingleItem('mabisang-lesson', 6)">📖 Lesson 6: Pagbuo ng Malinaw na Mensahe</div>
+                <div class="item-title" onclick="showSingleItem('mabisang-lesson', 7)">📖 Lesson 7: Pakikinig at Pag-unawa</div>
+                <div class="item-title" onclick="showSingleItem('mabisang-lesson', 8)">📖 Lesson 8: Komunikasyon sa Akademikong Gawain</div>
+                <div class="item-title" onclick="showSingleItem('mabisang-lesson', 9)">📖 Lesson 9: Pagsulat ng Pormal na Liham at Email</div>
+                <div class="item-title" onclick="showSingleItem('mabisang-lesson', 10)">📖 Lesson 10: Pagharap sa Hindi Pagkakaunawaan</div>
+            </div>
+            <div id="mabisang-lesson-view" class="single-view">
+                <span class="back-btn" onclick="backToList('mabisang-lesson')">← back To Lesson List</span>
+                <div id="mabisang-lesson-content-1">
+                    <h3>📖 Aralin 1: Kahulugan at Kahalagahan ng Komunikasyon</h3>
+                    <p>Ang <strong>komunikasyon</strong> ay proseso ng pagpapadala at pagtanggap ng mensahe, ideya, impormasyon, at damdamin sa pagitan ng mga tao.</p>
+                    <p><strong>Kahalagahan:</strong> Nakakatulong ito sa pag-unawa sa isa't isa, pagbabahagi ng kaalaman, paglutas ng suliranin, at pagpapatibay ng ugnayan.</p>
+                    <p><strong>Mabisang komunikasyon</strong> ang malinaw, angkop, magalang, at nauunawaan ng kausap.</p>
+                </div>
+                <div id="mabisang-lesson-content-2">
+                    <h3>📖 Aralin 2: Mga Elemento ng Komunikasyon</h3>
+                    <p><strong>Tagapagpadala:</strong> Taong bumubuo at nagpapadala ng mensahe.</p>
+                    <p><strong>Mensahe:</strong> Impormasyong nais ipahayag.</p>
+                    <p><strong>Daluyan:</strong> Paraan ng pagpapadala, tulad ng pagsasalita, sulat, o online message.</p>
+                    <p><strong>Tagatanggap:</strong> Taong tumatanggap at nagbibigay-kahulugan sa mensahe.</p>
+                    <p><strong>Feedback:</strong> Tugon ng tagatanggap na nagpapakita kung naunawaan ang mensahe.</p>
+                    <p><strong>Ingay o hadlang:</strong> Anumang nakahahadlang sa malinaw na pag-unawa.</p>
+                </div>
+                <div id="mabisang-lesson-content-3">
+                    <h3>📖 Aralin 3: Wasto at Angkop na Paggamit ng Wika</h3>
+                    <p>Gamitin ang wikang angkop sa kausap, layunin, at sitwasyon.</p>
+                    <p>✅ Maging malinaw at tiyak sa pagpili ng mga salita.</p>
+                    <p>✅ Igalang ang pananaw at damdamin ng kausap.</p>
+                    <p>✅ Iwasan ang malabong pahayag at hindi kailangang pananalita.</p>
+                    <p>✅ Makinig nang mabuti at magtanong kung may hindi nauunawaan.</p>
+                </div>
+
+                <div id="mabisang-lesson-content-4" style="display:none;">
+                    <h3>📖 Lesson 4: Berbal at Di-Berbal na Komunikasyon</h3>
+                    <p>Ang berbal na komunikasyon ay gumagamit ng mga salita, pasalita man o pasulat. Ang di-berbal ay gumagamit ng ekspresyon ng mukha, kilos, tindig, kumpas, at tono upang magpahiwatig ng kahulugan.</p>
+                </div>
+                <div id="mabisang-lesson-content-5" style="display:none;">
+                    <h3>📖 Lesson 5: Antas at Barayti ng Wika</h3>
+                    <p>Nag-iiba ang paggamit ng wika ayon sa sitwasyon, lugar, pangkat, at layunin. Piliin ang angkop na salita at antas ng pormalidad batay sa kausap at konteksto.</p>
+                </div>
+                <div id="mabisang-lesson-content-6" style="display:none;">
+                    <h3>📖 Lesson 6: Pagbuo ng Malinaw na Mensahe</h3>
+                    <p>Ayusin ang ideya sa lohikal na pagkakasunod-sunod. Gumamit ng tiyak na salita, maiikling pangungusap kung kailangan, at mga pang-ugnay upang madaling masundan ang mensahe.</p>
+                </div>
+                <div id="mabisang-lesson-content-7" style="display:none;">
+                    <h3>📖 Lesson 7: Pakikinig at Pag-unawa</h3>
+                    <p>Ang mahusay na tagapakinig ay nakatuon sa nagsasalita, iniiwasan ang panghuhusga habang nakikinig, at nagtatanong kung may hindi malinaw. Nakakatulong ang pagbubuod upang matiyak ang pag-unawa.</p>
+                </div>
+                <div id="mabisang-lesson-content-8" style="display:none;">
+                    <h3>📖 Lesson 8: Komunikasyon sa Akademikong Gawain</h3>
+                    <p>Sa talakayan, ulat, at presentasyon, gumamit ng malinaw na estruktura at mapagkakatiwalaang impormasyon. Kilalanin ang pinagmulan ng ideya at iwasan ang pangongopya.</p>
+                </div>
+                <div id="mabisang-lesson-content-9" style="display:none;">
+                    <h3>📖 Lesson 9: Pagsulat ng Pormal na Liham at Email</h3>
+                    <p>Ang pormal na liham o email ay may malinaw na paksa, magalang na pagbati, maayos na katawan, at angkop na pangwakas. Suriin ang pangalan, detalye, tono, at baybay bago ipadala.</p>
+                </div>
+                <div id="mabisang-lesson-content-10" style="display:none;">
+                    <h3>📖 Lesson 10: Pagharap sa Hindi Pagkakaunawaan</h3>
+                    <p>Kapag may hindi pagkakaunawaan, manatiling kalmado, pakinggan ang magkabilang panig, linawin ang intensiyon, at gumamit ng mga pahayag na nakatuon sa sariling damdamin at pangangailangan.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="mabisang-reviewers" class="section-content hidden">
+            <div id="mabisang-review-list" class="item-list">
+                <h4 style="margin-bottom:15px;color:#555;">📝 Pumili ng Reviewer</h4>
+                <div class="item-title" onclick="showSingleItem('mabisang-review',1)">📝 Reviewer 1: Mga Pangunahing Konsepto</div>
+                <div class="item-title" onclick="showSingleItem('mabisang-review',2)">📝 Reviewer 2: Mga Paraan ng Mabisang Pakikipag-usap</div>
+            </div>
+            <div id="mabisang-review-view" class="single-view">
+                <span class="back-btn" onclick="backToList('mabisang-review')">← Back To Reviewers</span>
+                <div id="mabisang-review-content-1">
+                    <h3>📝 Reviewer 1: Mga Pangunahing Konsepto</h3>
+                    <p>✅ Komunikasyon — pagpapalitan ng mensahe at kahulugan.</p>
+                    <p>✅ Tagapagpadala — pinagmumulan ng mensahe.</p>
+                    <p>✅ Daluyan — paraan kung paano ipinapadala ang mensahe.</p>
+                    <p>✅ Feedback — tugon sa natanggap na mensahe.</p>
+                    <p>✅ Hadlang — salik na nakaaapekto sa pag-unawa.</p>
+                </div>
+                <div id="mabisang-review-content-2">
+                    <h3>📝 Reviewer 2: Mga Paraan ng Mabisang Pakikipag-usap</h3>
+                    <p>✅ Makinig nang aktibo at huwag agad sumabat.</p>
+                    <p>✅ Magsalita nang malinaw at gumamit ng angkop na tono.</p>
+                    <p>✅ Isaalang-alang ang kultura, edad, at kaalaman ng kausap.</p>
+                    <p>✅ Gumamit ng magalang na pananalita at magbigay ng makabuluhang feedback.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="mabisang-quizzes" class="section-content hidden">
+            <h4 style="margin-bottom:15px;color:#555;">❓ Sagutin ang mga tanong, pagkatapos ay pindutin ang Submit Answers</h4>
+            <div class="quiz-item" data-qid="mkq1" data-answer="a">
+                <p><strong>1. Ano ang tawag sa tugon ng tagatanggap sa mensahe?</strong></p>
+                <div class="option" data-value="a" onclick="selectOption(this)">A. Feedback</div>
+                <div class="option" data-value="b" onclick="selectOption(this)">B. Daluyan</div>
+                <div class="option" data-value="c" onclick="selectOption(this)">C. Ingay</div>
+                <div class="feedback">✅ Tama! Ang feedback ay tugon sa natanggap na mensahe.</div>
+            </div>
+            <div class="quiz-item" data-qid="mkq2" data-answer="c">
+                <p><strong>2. Alin ang nagpapakita ng mabisang komunikasyon?</strong></p>
+                <div class="option" data-value="a" onclick="selectOption(this)">A. Pagsabat habang may nagsasalita</div>
+                <div class="option" data-value="b" onclick="selectOption(this)">B. Paggamit ng malabong salita</div>
+                <div class="option" data-value="c" onclick="selectOption(this)">C. Pakikinig nang mabuti at pagsasalita nang malinaw</div>
+                <div class="feedback">✅ Tama! Mahalaga ang malinaw na pagpapahayag at aktibong pakikinig.</div>
+            </div>
+            <div class="quiz-item" data-qid="mkq3" data-answer="b">
+                <p><strong>3. Ano ang tawag sa paraan ng pagpapadala ng mensahe?</strong></p>
+                <div class="option" data-value="a" onclick="selectOption(this)">A. Tagatanggap</div>
+                <div class="option" data-value="b" onclick="selectOption(this)">B. Daluyan</div>
+                <div class="option" data-value="c" onclick="selectOption(this)">C. Feedback</div>
+                <div class="feedback">✅ Tama! Ang daluyan ay paraan ng pagpapadala ng mensahe.</div>
+            </div>
+            <button class="submit-quiz-btn" onclick="submitAllQuiz('mabisang')">📝 Submit Answers</button>
+        </div>
+    </div>
+
+<footer>
+    <p>© 2026 IIHC HUB | IIHC La Forteza. All Rights Reserved.</p>
+</footer>
+
+<script>
+// ========== NAVIGATION ==========
+function showPage(pageName) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById(pageName + '-page').classList.add('active');
+    window.scrollTo(0, 0);
+}
+
+// ========== SEARCH ==========
+// Strand > Grade > Subject navigation. The subject catalog can be edited here.
+const subjectCatalog = {
+  math: {name:'General Mathematics', icon:'📐', strand:['STEM','ABM','GAS'], grades:['11','12'], description:'Lessons • Reviewers • Quizzes'},
+  science: {name:'General Science', icon:'🔬', strand:['STEM','GAS'], grades:['11','12'], description:'Lessons • Reviewers • Quizzes'},
+  programming: {name:'Computer Programming', icon:'💻', strand:['TVL-ICT'], grades:['11','12'], description:'Lessons • Reviewers • Quizzes'},
+  history: {name:'Philippine History & Society', icon:'🇵🇭', strand:['HUMSS','GAS'], grades:['11','12'], description:'Lessons • Reviewers • Quizzes'},
+  comm: {name:'Effective Communication', icon:'💬', strand:['HUMSS','ABM','GAS'], grades:['11','12'], description:'Lessons • Reviewers • Quizzes'},
+  mabisang: {name:'Mabisang Komunikasyon', icon:'🗣️', strand:['HUMSS','GAS'], grades:['11','12'], description:'Lessons • Reviewers • Quizzes'}
+};
+let selectedStrand = '';
+let selectedGrade = '';
+function chooseStrand(strand) {
+  selectedStrand = strand;
+  document.getElementById('strandSelection').classList.add('hidden');
+  document.getElementById('gradeSelection').classList.remove('hidden');
+  document.getElementById('subjectSelection').classList.add('hidden');
+  document.getElementById('selectedStrandTitle').textContent = '📚 ' + strand + ' — Select Grade Level';
+}
+function chooseGrade(grade) {
+  selectedGrade = grade;
+  document.getElementById('gradeSelection').classList.add('hidden');
+  document.getElementById('subjectSelection').classList.remove('hidden');
+  document.getElementById('selectedGradeTitle').textContent = '📘 ' + selectedStrand + ' • Grade ' + grade + ' — Subject';
+  renderSubjects();
+}
+function renderSubjects() {
+  const grid = document.getElementById('subjectGrid');
+  grid.innerHTML = '';
+  Object.entries(subjectCatalog).filter(([code, sub]) => sub.strand.includes(selectedStrand) && sub.grades.includes(selectedGrade)).forEach(([code, sub]) => {
+    const card = document.createElement('div');
+    card.className = 'subject-card';
+    card.dataset.subject = code;
+    card.innerHTML = '<h3>' + sub.icon + ' ' + sub.name + '</h3><p>' + sub.description + '</p>';
+    card.addEventListener('click', () => openSubject(code));
+    grid.appendChild(card);
+  });
+  filterSubjects();
+}
+function filterSubjects() {
+  const field = document.getElementById('searchInput');
+  if (!field) return;
+  const searchText = field.value.toLowerCase().trim();
+  document.querySelectorAll('#subjectGrid .subject-card').forEach(card => {
+    card.style.display = card.textContent.toLowerCase().includes(searchText) ? 'block' : 'none';
+  });
+}
+document.getElementById('searchInput').addEventListener('input', filterSubjects);
+function backToStrands() {
+  document.getElementById('strandSelection').classList.remove('hidden');
+  document.getElementById('gradeSelection').classList.add('hidden');
+  document.getElementById('subjectSelection').classList.add('hidden');
+}
+function backToGrades() {
+  document.getElementById('gradeSelection').classList.remove('hidden');
+  document.getElementById('subjectSelection').classList.add('hidden');
+}
+
+// ========== OPEN SUBJECT ==========
+function openSubject(subjectCode) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    const subjectPage = document.getElementById('subject-' + subjectCode);
+    if (!subjectPage) return;
+    subjectPage.classList.add('active');
+    ensureTenReviewers(subjectCode);
+    ensureTenQuizQuestions(subjectCode);
+    switchSection(subjectCode + '-lessons');
+    window.scrollTo(0, 0);
+}
+
+// Ensure every subject has 10 reviewer items and 10 quiz questions.
+function ensureTenReviewers(subjectCode) {
+  const page = document.getElementById('subject-' + subjectCode);
+  if (!page) return;
+  const list = document.getElementById(subjectCode + '-review-list');
+  const view = document.getElementById(subjectCode + '-review-view');
+  if (!list || !view || list.dataset.completed === 'yes') return;
+  const titles = [...page.querySelectorAll('#' + subjectCode + '-lesson-list .item-title')].map(el => el.textContent.replace(/^📖\s*Lesson\s*\d+:?\s*/i, '').trim());
+  list.innerHTML = '<h4 style="margin-bottom:15px;color:#555">📝 Choose Reviewers (10)</h4>';
+  view.innerHTML = '<span class="back-btn">← Back To Reviewers</span>';
+  view.querySelector('.back-btn').addEventListener('click', () => backToList(subjectCode + '-review'));
+  for (let i=1; i<=10; i++) {
+    const title = titles[i-1] || ('Topic ' + i);
+    const item = document.createElement('div');
+    item.className = 'item-title';
+    item.textContent = '📝 Reviewer ' + i + ': ' + title;
+    item.addEventListener('click', () => showSingleItem(subjectCode + '-review', i));
+    list.appendChild(item);
+    const content = document.createElement('div');
+    content.id = subjectCode + '-review-content-' + i;
+    content.style.display = i === 1 ? 'block' : 'none';
+    const lessonContent = document.getElementById(subjectCode + '-lesson-content-' + i);
+    const summary = lessonContent ? lessonContent.innerHTML : '<p>Balikan ang pangunahing konsepto, kahulugan, at halimbawa ng paksang ito.</p>';
+    content.innerHTML = '<h3>📝 Reviewer ' + i + ': ' + title + '</h3><p><strong>Key points to remember:</strong></p>' + summary + '<p>Tip: Read Wisely.</p>';
+    view.appendChild(content);
+  }
+  list.dataset.completed = 'yes';
+}
+function ensureTenQuizQuestions(subjectCode) {
+  const container = document.getElementById(subjectCode + '-quizzes');
+  const page = document.getElementById('subject-' + subjectCode);
+  if (!container || !page || container.dataset.completed === 'yes') return;
+  const existing = container.querySelectorAll('.quiz-item').length;
+  const titles = [...page.querySelectorAll('#' + subjectCode + '-lesson-list .item-title')].map(el => el.textContent.replace(/^📖\s*Lesson\s*\d+:?\s*/i, '').trim());
+  for (let n=existing+1; n<=10; n++) {
+    const targetIndex = n-1;
+    const correctTitle = titles[targetIndex] || ('Topic ' + n);
+    const wrongTitles = titles.filter(t => t !== correctTitle).slice(0,2);
+    while (wrongTitles.length < 2) wrongTitles.push('None of the above');
+    const options = [correctTitle, wrongTitles[0], wrongTitles[1]];
+    const correctSlot = (n % 3);
+    const ordered = options.slice();
+    const correct = ordered.splice(0,1)[0];
+    ordered.splice(correctSlot,0,correct);
+    const letters = ['a','b','c'];
+    const q = document.createElement('div');
+    q.className = 'quiz-item';
+    q.dataset.qid = subjectCode + '_auto_q' + n;
+    q.dataset.answer = letters[ordered.indexOf(correct)];
+    q.innerHTML = '<p><strong>' + n + '. What Lesson ' + n + '?</strong></p>' + ordered.map((t,i) => '<div class="option" data-value="' + letters[i] + '" onclick="selectOption(this)">' + letters[i].toUpperCase() + '. ' + escapeHTML(t) + '</div>').join('') + '<div class="feedback">Tingnan ang tamang sagot na kulay berde.</div>';
+    container.insertBefore(q, container.querySelector('.submit-quiz-btn'));
+  }
+  container.dataset.completed = 'yes';
+}
+function escapeHTML(value) {
+  return String(value).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+}
+
+// ========== SWITCH SECTIONS ==========
+function switchSection(sectionId) {
+    const parentId = sectionId.split('-').slice(0, -1).join('-');
+    document.querySelectorAll('.section-content').forEach(sec => sec.classList.add('hidden'));
+    document.getElementById(sectionId).classList.remove('hidden');
+    document.querySelectorAll('.section-tab').forEach(tab => tab.classList.remove('active'));
+    document.getElementById('tab-' + sectionId).classList.add('active');
+}
+
+// ========== SHOW SINGLE ITEM ==========
+function showSingleItem(type, num) {
+    document.getElementById(type + '-list').classList.add('hidden');
+    document.getElementById(type + '-view').classList.add('show');
+    for (let i = 1; i <= 10; i++) {
+        const el = document.getElementById(type + '-content-' + i);
+        if (el) el.style.display = 'none';
+    }
+    const selectedContent = document.getElementById(type + '-content-' + num);
+    if (selectedContent) selectedContent.style.display = 'block';
+}
+
+// ========== BACK TO LIST ==========
+function backToList(type) {
+    document.getElementById(type + '-list').classList.remove('hidden');
+    document.getElementById(type + '-view').classList.remove('show');
+}
+
+// ========== QUIZ LOGIC ==========
+let userAnswers = {};
+
+function selectOption(option) {
+    const parent = option.closest('.quiz-item');
+    const qid = parent.getAttribute('data-qid');
+    parent.querySelectorAll('.option').forEach(o => o.style.boxShadow = '');
+    option.style.boxShadow = '0 0 0 2px #2563eb';
+    userAnswers[qid] = option.getAttribute('data-value');
+}
+
+function submitAllQuiz(subject) {
+    const quizContainer = document.getElementById(subject + '-quizzes');
+    const questions = quizContainer.querySelectorAll('.quiz-item');
+
+    questions.forEach(q => {
+        const qid = q.getAttribute('data-qid');
+        const correctAns = q.getAttribute('data-answer');
+        const userAns = userAnswers[qid];
+        const options = q.querySelectorAll('.option');
+        const feedback = q.querySelector('.feedback');
+
+        options.forEach(opt => opt.classList.remove('correct', 'wrong'));
+        feedback.classList.remove('show', 'correct', 'wrong');
+
+        if (!userAns) {
+            feedback.classList.add('show', 'wrong');
+            feedback.innerHTML = '⚠️ No answer selected';
+            return;
+        }
+
+        options.forEach(opt => {
+            const val = opt.getAttribute('data-value');
+            if (val === correctAns) opt.classList.add('correct');
+            else if (val === userAns && userAns !== correctAns) opt.classList.add('wrong');
+        });
+
+        feedback.classList.add('show', userAns === correctAns ? 'correct' : 'wrong');
+        if (userAns !== correctAns) feedback.innerHTML = '❌ Incorrect. See the correct answer in green.';
+    });
+
+    window.scrollTo({ top: quizContainer.querySelector('.submit-quiz-btn').offsetTop - 50, behavior: 'smooth' });
+}
+</script>
+
+</body>
+</html>
